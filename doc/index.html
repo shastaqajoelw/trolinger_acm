@@ -1,0 +1,175 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>2012 Queue ICPC Challenge</title>
+</head>
+<body>
+
+<h2> 2012 Queue ICPC Challenge </h2>
+
+<p>
+ACM Queue Magazine is offering an online programming competition based
+on the 2011 International Collegiate Programming Competition (ICPC)
+Challenge problem. Participants will get to code a player and compete
+with others in the game of Coercion. Preliminary
+matches during the one-month coding phase will let you know how well
+your player is doing. A final double-elimination competition among all
+the submitted players will decide whose player is best.
+<p>
+
+<p>
+Coding and preliminary matches will run from the start of the GMT day
+on <b>January 15, 2012</b> to the end of the GMT day on <b>February
+12</b>.
+<p>
+
+<ul>
+<li> <a href="overview.html">Competition overview</a>
+  
+<li> <a href="rules.html">Game rules</a>
+<li> <a href="examples.html">Example players</a>
+<li> <a href="environment.html">Player execution environment</a>
+<li> <a href="usage.html">Game usage instructions</a>
+<li> <a href="competition.html">Competition model</a>
+</ul>
+
+<a name="short.game.description"/>
+<h2>The Game of Coercion </h2>
+
+<p>
+The Queue ICPC Challenge game, Coercion, is played in an
+environment that looks something like the following figure.  A red
+player and a blue player compete to coerce regions of the playing
+field to their own color.  Each player directly controls
+three playing pieces called pushers.  These pieces can't
+directly change colors on the field, but, they can be used to push
+other playing pieces called markers around the field.  If enough
+markers touch a region of the field for long enough, they can coerce
+it to their own color.  If a marker is trapped for long enough in a
+region of a different color, it may be coerced to that region's color.
+The <a href="rules.html">game rules</a> describe how to play the game,
+how to score points and how to win.
+</p>
+
+<img src="game.png" alt="Game illustration" width=640 height=545/>
+
+<h2>Writing your Player</h2>
+
+<p>
+Your player will be implemented as a stand-alone program, in C++,
+Java, C#, Python or Javascript.  You will interact with the game by
+reading information about the game world from standard input and
+writing your next move to standard
+output. The <a href="examples.html">sample players</a> can be a quick
+way for you to get started writing your player and interacting with
+the game. A more detailed description of
+the <a href="environment.html">execution environment</a> explains the
+input and output format for your player as well as other rules for
+what your player can do.
+</p>
+
+<h2>Running a Match</h2>
+
+<p>
+Once you have a player written, you can run it by starting up the game
+and pointing it to your player's executable. If you have written a
+player in C++, you can run it against the sample Java player using
+a command like:
+</p>
+
+<pre>
+java -jar coercion.jar -player cpp myPlayer -player java -cp java_example Hunter
+</pre>
+
+<p>
+If your player is implemented in Java, you can run it against the 
+example player using a command like:
+</p>
+
+<pre>
+java -jar coercion.jar -player java -cp java_example Planter -player java MyPlayer 
+</pre>
+
+<p>
+The more detailed usage instructions describe more options for
+starting up the game, including how to run the 3D visualization, how
+to capture a match as a trace file and how to debug your player
+during execution.
+</p>
+
+<h2>Submitting your Player</h2>
+
+<p>
+During the coding phase, players can access the competition through
+the queue site
+at: <a href="http://queue.acm.org/icpc/">http://queue.acm.org/icpc/</a>
+From this page, participants will be able to register for the
+competition, login to the submission system, submit player code and
+see how they are doing in preliminary matches. The latest working
+submission is considered the participant's current player. The final
+tournament and the nightly preliminary matches will use the most
+recently submitted player code that successfully builds.
+</p>
+
+<p>
+All source code and supporting files for a player must be submitted at
+once. From the submission interface, select each source file that's
+part of your player, and then press the "Upload Files" button to
+upload the whole thing. If you forget to submit an important file, you
+will need to re-submit everything to have a working player. 
+</p>
+
+<h2>Additional Information</h2>
+
+<p>
+The Queue ICPC Challenge website, <a href="http://queue.acm.org/icpc/">http://queue.acm.org/icpc/</a>, will
+provide regularly updated information during the coding phase of the
+competition. If corrections or clarifications are needed, they will be
+linked from here.
+</p>
+
+<p>
+A Google
+Group <a href="http://groups.google.com/group/qicpc?pli=1">http://groups.google.com/group/qicpc?pli=1</a>
+has also been set up to support player discussion about the
+competition.  Volunteers from ACM Queue Magazine and ICPC will monitor
+this group and try to answer questions, but, often, other participants
+are able to answer questions before we get a chance to.
+</p>
+
+</body></html>

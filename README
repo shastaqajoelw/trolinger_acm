@@ -1,0 +1,7 @@
+Game rules are found in the doc folder.
+
+The game environment is part of coercion.jar. The doc folder explains how to call this .jar file.
+
+Two example player programs are found in gather.cpp / Util.h and Migrate.java.
+
+The current core code of our player is currently at our_source.cpp. This is, at present, a cpp player because this is real-time software.

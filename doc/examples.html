@@ -1,0 +1,139 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>2012 Queue ICPC Challenge Example Players </title>
+</head>
+<body>
+
+<h1>Example Players</h1>
+
+<p>
+In the distribution binary, the various example directories contain
+sample players implemented in each of the available competition
+languages.  The source code for these demonstrates how a player is to
+interact with the game, and they may give you some ideas about how
+your own player could operate.  Of course, these players are not too
+smart.  Using them as a starting point, you can probably do much
+better.
+</p>
+
+<p>
+You can build these players independently and then run them against
+each other in the game using a command like the following.  If you've
+compiled the example players, and left their executables in the same
+directories as the source code, you should be able to run this command
+from the top-level directory of the expanded
+game <a href="coercion.zip">distribution binary</a>:
+</p>
+
+<pre>
+java -jar coercion.jar -player cpp c++_example/gather -player java -cp java_example Migrate
+</pre>
+
+<p>
+Source code for the Java player is stored in
+a <code>java_example</code> subdirectory, but its code is defined in
+the default package.  The <code>-cp java_example</code> on the command
+line adds <code>java_example</code> to the class path before running
+this player.  If you put your Java player in the current directory,
+you won't need the <code>-cp</code> option.
+</p>
+
+<h2>C++ Example Player</h2>
+
+<p>
+The C++ example player, gather, tries to collect markers in its
+starting corner of the field.  If the player can keep this space from
+changing color, it can use it to coerce these markers to its color.
+The player then tries to push the markers to other parts of the field
+to coerce the color there.
+</p>
+
+<ul>
+<li> <a href="../c++_example/Util.h">Util.h</a> : Game-specific
+    constants and utility functions.
+<li> <a href="../c++_example/gather.cpp">gather.cpp</a> : Main file for
+the C++ player.
+</ul>
+
+<h2>Java Example Player</h2>
+
+<p>
+The Java sample player, Migrate, simply takes each of the markers that
+start out in the player's color and tries to push them to the edge of
+the player's territory.  If the player is able to coerce these
+boundary regions to its color, it pushes the markers to a new boundary
+edge and expands the territory further.
+</p>
+
+<ul>
+<li> <a href="../java_example/Migrate.java">Migrate.java</a> : Main file for the Java player.
+</ul>
+
+<h2>C# Example Player</h2>
+
+<p>
+The C# sample player, Migrate.cs, is a port of the Java sample player,
+it takes each of the markers that start out in the player's color and
+tries to push into new territory to convert it.
+</p>
+
+<ul>
+<li> <a href="../csharp_example/Migrate.cs">Migrate.cs</a> : Source for the C# player.
+</ul>
+
+<h2>Python Example Player</h2>
+
+<p>
+The Python example player is a port of the C++ player, gather.  It
+tries to convert markers by moving them into it's home space, then it
+moves them out into the field to try to claim new territory.
+</p>
+
+<ul>
+<li> <a href="../python_example/gather.py">gather.py</a> : Source file for
+the Python example player.
+</ul>
+
+<h2> JavaScript Example Player</h2>
+
+<p>
+Coming Soon.
+</p>
+
+</body></html>

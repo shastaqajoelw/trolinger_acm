@@ -1,0 +1,437 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <title>2012 Queue ICPC Challenge Rules</title>
+</head>
+<body>
+
+<h1>Playing The Game</h1>
+
+<p>
+The game of Coercion is a two-player game, where a red and a blue
+player each try to claim as much playing field territory as they can.
+Each player controls three moving pieces called <i>pushers</i>.
+Using these pushers to strategically position <i>markers</i> of
+various colors around the field, players can acquire territory by
+coercing it to switch to their own color.  Each player's score reflects how
+much territory they have acquired, and the winner is the one with the
+most at the end of the match.
+</p>
+
+<p>
+A match of Coercion proceeds through a series of 900
+turns.  At the start of each turn, both players are given a
+description of the current state of the game.  For each turn, the
+player directs how their three pushers should change movement
+direction.  Based on the player's move, the game updates the movement
+directions for the pushers and then simulates one turn of movement for
+all pushers and markers.  At the end of the turn, the colors of
+markers and field regions may change, depending on how the markers are
+positioned and how long they have been in those locations.
+</p>
+
+<h1>The Playing Field</h1>
+
+<p>
+The game is played on a field of convex polygon regions.  Regions are
+planar, with their vertices at various heights, and any region can
+change color between red, blue and grey.  The goal of a player is to
+convert regions of the largest total area to the player's color.
+</p>
+
+<img src="coords.png" alt="Game Coordinate System" align="center"
+     width=400 height=401/>
+
+<p>
+The playing field uses a three-dimensional coordinate system,
+with <var>X = 0</var> at the left edge and <var>X = 100</var>
+at the right edge.  The <var>Y</var> values range from 0 at the front
+edge to <var>100</var> at the back edge.  The
+positive <var>Z</var> axis points up.  The <var>100 &times;
+100</var> field is entirely covered by planar, convex polygon
+regions.  The vertices at the corners of the regions always have
+integer coordinates.
+</p>
+
+<p>
+Most aspects of the game only depend on two-dimensional geometry
+in <var>X</var> and <var>Y</var>.  Variations in <var>Z</var> give
+each region a slope, and gravitational acceleration will make objects
+tend to roll downhill.
+</p>
+
+<a name="pusher.section"/>
+<h2>Pushers</h2>
+
+<img src="pushers.png" alt="Pusher playing piece" align="right"
+     width=250 height=81/>
+
+<p>
+Each player has control of three playing pieces called <i>pushers</i>.
+The pusher is modeled as a circle (in the <var>XY</var> plane) with a
+radius of 1 and a mass of 1.  The pusher
+maintains a current location and velocity.  The location corresponds
+to the center of the circle, and velocity is expressed as distance
+moved (in field units) in the <var>XY</var> direction per turn.
+Pusher movement is frictionless, but it is affected by gravitational
+acceleration and the slope of the region under it.  Pushers bounce
+elastically off the edge of the field and off other moving objects.
+</p>
+
+<p>
+A player controls its pushers by applying a two-dimensional force
+vector to the pusher in the <var>XY</var> plane.  After a player's
+move is received, each force vector is added to the corresponding
+pusher's velocity before movement for that turn is simulated.  A force
+vector can be up to 2 in magnitude.  If a force vector
+of greater magnitude is given by the player, the game will reduce its
+magnitude to 2 while keeping its direction the same.
+After the force vector is added to the pusher's velocity, the velocity
+is restricted to a magnitude of 6.  If a pusher's
+speed exceeds 6 units per turn after the move is
+applied, the magnitude of the velocity is reduced to
+6, while its direction remains the same.
+</p>
+
+<h2>Markers</h2>
+
+<img src="markers.png" alt="Marker playing piece" align="right"
+     width=250 height=114/>
+
+<p>
+The field contains 22 <i>markers</i>.  A marker is modeled
+as a circle (in the <var>XY</var> plane) with a radius of 2
+and a mass of 3.  Like the pusher, each marker has a
+velocity and a current location indicating the <var>XY</var> location
+of the marker's center.  Markers bounce elastically off the edge of
+the field and other moving objects.
+</p>
+
+<p>
+Each marker has a color, either red, blue or
+grey, and its color can change based on the regions it's touching.
+A marker is subject to gravitational acceleration based on the slope
+of the region under it, and it also experiences friction with the
+surface of the field.  The speed of a marker is reduced by
+0.35 at the start of each game turn.
+</p>
+
+<a name="initial.field"/>
+<h2>Initial Field</h2>
+
+<p>
+The red player starts in the front left corner of the field, and the
+blue player starts in the back right corner.  The geometry of the field may
+vary from match to match, but it will not change during a match; only
+the colors of the field regions can change.  Field geometry is also
+guaranteed to be symmetric under a 180-degree <var>Z</var> rotation
+about the field center.  Thus, each player is presented with matching
+field geometry.
+</p>
+
+<p>
+The following figure illustrates a typical starting configuration for
+a match.  The geometry of most regions may vary from match to match,
+including the shapes of field regions, their heights and their slopes.
+For every field, however, each player always starts with a <i>home
+region</i>.  The home region of the red player is always a horizontal
+(no slope) <var>20 &times; 20</var> region at the front
+left corner of the field.  The blue player always has a
+matching <var>20 &times; 20</var> home region at the
+back right corner.  Each player's home region is the same
+color as the player.  All other regions are initially grey.
+</p>
+
+<img src="initial.png" alt="Initial Field Layout" align="center"
+     width=480 height=395/>
+
+<p>
+The red player always starts with three pushers at locations 
+<var>(5, 10), (5, 5)</var> and <var>(10, 5)</var>, and the blue
+player starts with three pushers at locations <var>(90, 95), (95,
+95)</var> and <var>(95, 90)</var>.  The red player's home region
+starts with three red markers at locations <var>(5, 15), (10, 10
+)</var> and <var>(15, 5)</var>, while the blue player's home regions
+starts with three blue markers at <var>(85, 95), (90, 90)</var>
+and <var>(95, 85)</var>.  Sixteen grey markers start out at the
+following locations:
+</p>
+
+<table>
+<tr>
+<td>(5, 75)</td>
+<td>(15, 65)</td>
+<td>(25, 55)</td>
+<td>(35, 45)</td>
+<td>(45, 35)</td>
+<td>(55, 25)</td>
+<td>(65, 15)</td>
+<td>(75, 5)</td>
+</tr>
+<tr>
+<td>(25, 95)</td>
+<td>(35, 85)</td>
+<td>(45, 75)</td>
+<td>(55, 65)</td>
+<td>(65, 55)</td>
+<td>(75, 45)</td>
+<td>(85, 35)</td>
+<td>(95, 25)</td>
+</tr>
+<table>
+
+<p>
+Speeds of
+markers and pushers are initially zero, but the pushers outside the
+home regions might start to slide downhill immediately, depending on
+the region they are in.  Playing pieces in the home region are on a
+horizontal surface, so they won't slide downhill.
+</p>
+
+<h2>Color Coercion</h2>
+
+<p>
+Players earn points for coercing field regions to their own color.
+Both field regions and markers can change color during the game,
+depending on how they are in contact.  We say a marker touches a
+region if the region overlaps anywhere with the marker's
+two-dimensional representation, a radius 2 circle in
+the <var>XY</var> plane.  Enough markers touching a region
+can <i>coerce</i> that region to switch to the marker's color.  If a
+marker stays inside regions of a different color long enough, the
+marker may be coerced to that region's color instead.
+</p>
+
+<p>
+We say color <var>c</var> applies pressure to some region <var>r</var>
+if <var>r</var> has a color that's different from <var>c</var> and
+more markers of color <var>c</var> are touching
+<var>r</var> than markers of any other color.  For example, if some
+region is touched by three red markers, two grey markers and one blue
+marker, then red is applying pressure to the region.  If
+color <var>c</var> is applying pressure to region <var>r</var> at the
+ends of 20 consecutive turns, region <var>r</var>
+will be coerced to color <var>c</var> at the end of the
+20<sup>th</sup> turn.
+</p>
+
+<p>
+Each player's home region is special.  It starts out as the player's
+color, and it will never change color.  This way, a player will always
+have some portion of the field that can be used to claim new markers.
+</p>
+
+<p>
+We say color <var>c</var> applies pressure to some marker <var>m</var>
+if <var>m</var> has a color that's different from <var>c</var> and
+<var>m</var> is only touching regions of color </var>c</var>.  For
+example, if a red marker touches only blue regions, then blue is
+applying pressure to the marker.  If color <var>c</var> is applying
+pressure to marker <var>m</var> at the ends of 40
+consecutive turns, marker <var>m</var> will be coerced to
+color <var>c</var> at the end of the
+40<sup>th</sup> turn.
+</p>
+
+<p>
+Pressure on regions and markers is assessed only at the end of each
+game turn, after player moves have been received and one turn of
+movement has been simulated.  Temporary states that occur during the
+simulation of a turn do not interrupt the coercion of markers or
+regions.  For example, if a blue marker is completely inside a grey
+region, then grey is applying pressure to the marker.  If the marker
+touches a red region while a turn is being simulated, but returns to a
+grey region by the end of the turn, then the temporary contact with a
+red region is not an interruption in the pressure applied by grey.
+
+<table>
+<tr>
+<td><img src="crossregion1.png" alt="Blue marker passing quickly
+				     through a red region" width=137 height=120/></td>
+
+<td>&nbsp;</td>
+<td><img src="crossregion2.png" alt="Blue marker passing quickly
+				     through a red region" width=137 height=120/></td>
+<tr>
+</table>
+
+<p>
+Likewise, if a blue region has just one marker touching it and that
+marker is grey, then grey is applying pressure to the region.  If that
+marker leaves the region, but another grey marker touches the region
+before the end of the turn, then grey continues to apply pressure to
+the region.
+</p>
+
+<table>
+<tr>
+<td><img src="transition1.png" alt="Marker leaving a region as another
+				    enters" width=178 height=120/></td>
+
+<td>&nbsp;</td>
+<td><img src="transition2.png" alt="Marker leaving a region as another
+				    enters" width=179 height=120/></td>
+<tr>
+</table>
+
+<p>
+Color coercion takes place simultaneously for all affected regions and
+markers.  It's possible for a region and a marker inside it to be coerced
+to each other's colors at the same time.  For example, if a red marker
+is inside a grey region that's also touched by a blue marker, then grey
+is applying pressure to the red marker, but red is not applying
+pressure to the region.  If the blue marker is pushed out of the
+region after 20 turns, red will begin applying
+pressure to the region while the grey region continues to apply
+pressure to the marker.  Another 20 turns later,
+the marker may be coerced to grey while the region is coerced to red.
+</p>
+
+<table>
+<tr>
+<td><img src="simultaneous1.png" alt="Blue and red markers touching a grey
+     region" width=100 height=100/></td>
+
+<td>&nbsp;</td>
+<td><img src="simultaneous2.png" alt="Blue moved out of the region" width=100 height=100/></td>
+
+<td>&nbsp;</td>
+<td><img src="simultaneous3.png" alt="Both region and marker coerced"
+         width=100 height=100/></td>
+<tr>
+</table>
+
+<h2>Gravity</h2>
+
+<p>
+At the start of each turn, before players receive descriptions of the
+game state, pusher and marker velocities are updated based on
+gravitational acceleration and the slope of the region under them.
+The location of the center of a pusher or a marker determines what
+region it's affected by.  If the center of a game piece is inside a
+region that slopes, its velocity will be affected by the slope.  If
+the center of a piece is directly on the boundary between two or more
+regions, its velocity is not affected by any region (since locations
+are represented as real numbers, this condition is unlikely after the
+start of the game).
+</p>
+
+<p>
+The effects of gravity are computed by considering the
+three-dimensional geometry of the field.  However, only its influence
+in the <var>X</var> and <var>Y</var> directions is used.  The game
+does not consider any <var>Z</var> component of velocity for moving
+pieces.
+</p>
+
+<p>
+Gravity is based on a one unit per turn per turn acceleration in the
+negative <var>Z</var> direction.  Acceleration due to gravity is
+computed by projecting a unit vector in the negative <var>Z</var>
+direction, <var>g</var>, into a component perpendicular to the region
+surface and a component, <var>p</var>, parallel to the region surface.
+The component perpendicular to the surface is ignored.
+The <var>X</var> and <var>Y</var> components of <var>p</var> are added
+to the velocity of the affected marker or pusher at the start of each
+turn.
+</p>
+
+<img src="gravity.png" alt="Illustration of gravity calculation" align="center"
+     width=250 height=261/>
+
+<p>
+The default game visualization indicates how field regions are sloped
+by shading the regions appropriately and drawing a little white line
+at the middle of the region.  The line represents a vector
+perpendicular to the surface of the region.  The thin end points the
+way playing pieces will slide while they are on the region.  The
+length of the line indicates how steep the slope is.
+</p>
+
+<h2>Friction</h2>
+
+<p>
+Only the markers are subject to friction.  At the start of each turn,
+after the influence of gravity has been considered, friction is
+applied.  The speed of each marker is reduced by 0.35
+units per turn (or set to zero if speed is less than
+0.35).  Since friction is applied after gravity, but
+before the turn is simulated, small amounts of gravitational
+acceleration may have no effect on a stationary marker.  However a
+stationary marker will start to slide downhill if the slope is
+sufficiently steep.  Pushers, which do not experience friction, will
+always tend to slide downhill.
+</p>
+
+<h2>Simulated Time and Collisions</h2>
+
+<p>
+During the simulation of a turn, moving objects may collide with each
+other or with the edges of the field.  Collisions are handled
+elastically and occur on a continuous timescale.  Although players
+only see instantaneous snapshots of the game state at the beginnings
+of the turns, events like collisions may occur at intermediate times
+between these snapshots.  For example, pretend a pusher has a position
+three units from the edge of the field and is moving straight toward
+the edge with a speed of six.  That pusher will bounce off the edge
+one third of the way through the simulation of the turn (pushers have
+a radius of 1).  Its velocity will be reversed and its
+position will be five units from that edge the next time the player
+gets to make a move, provided nothing else interferes with it.
+</p>
+
+<h1>Score and Winning</h1>
+
+<p>
+A player's score is the size of the player's <i>territory</i>, the
+total area of all regions that match the player's color.  This area
+calculation considers the size of each region in the <var>X</var>
+and <var>Y</var> dimensions, ignoring changes in <var>Z</var> and
+effectively projecting regions into the <var>XY</var> plane before
+computing their area.  Regions on the map will always have integer
+areas.
+</p>
+
+<p>
+At the end of the game, the player with the largest territory is the
+winner.  If there is a tie in the territory size, then players'
+territory sizes at the end of each turn are summed across all game
+turns.  The player with the larger sum is considered the winner.
+</p>
+
+</body></html>
